@@ -1,7 +1,7 @@
 
 const url = require('url')
 const StringDecoder = require('string_decoder').StringDecoder;
-const router = require('./router')
+const routers = require('./router')
 const handlers = require('./handlers')
 module.exports = (req,res) =>{
 
@@ -29,9 +29,11 @@ module.exports = (req,res) =>{
     })
     req.on('end', ()=>{
         buffer += decoder.end()
-  
+
+        //Returns the corresponding router according to the http verb, default to get
+        const router = typeof(routers[method]!== 'undefined')?routers[method]:routers['get']
         // Check the router for a matching path for a handler. If one is not found, use the notFound handler instead.
-        const chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ? router[trimmedPath] : handlers.notFound
+        const chosenHandler = typeof(router[trimmedPath]) !== 'undefined' ?router[trimmedPath]: handlers.notFound
   
         // Construct the data object to send to the handler
         const data = {
@@ -52,7 +54,7 @@ module.exports = (req,res) =>{
           payload = typeof(payload) == 'object'? payload : {}
   
           // Convert the payload to a string
-          var payloadString = JSON.stringify(payload.payload, null, 4)
+          var payloadString = JSON.stringify(payload, null, 4)
   
           // Return the response
           res.setHeader('Content-Type', 'application/json')

@@ -19,7 +19,7 @@ notFound = (data,callback)=>{
  * and a 202 status code
  */
 hello = (data, callback)=>{
-    callback(202, data)
+    callback(202, {"message":"Hello from the Hello API"})
 }
 
 module.exports ={

@@ -8,9 +8,14 @@
  const server= require('./server')
  //Import the configuration file
  const config = require('./config')
+ const app = require('express')()
 //instantiate the http server
  const httpServer = http.createServer((req, res)=>{
     server(req, res)
+ })
+
+ app.post('/',(req,res)=>{
+     
  })
 
  //start the http server
